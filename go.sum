@@ -221,8 +221,6 @@ github.com/bnb-chain/greenfield-cosmos-sdk v0.1.0 h1:uKTjLxB4+EKry79hbCM32QmRcUS
 github.com/bnb-chain/greenfield-cosmos-sdk v0.1.0/go.mod h1:rvAY7ga/AakZWyYkA1zAsNtvKpdoyRFZTqF4MhFYzZ8=
 github.com/bnb-chain/greenfield-cosmos-sdk/math v0.0.0-20230228075616-68ac309b432c h1:BLmdYaj7Dx0YOhfk77+KPPJSMCwpQl6f4Y30+801bf0=
 github.com/bnb-chain/greenfield-cosmos-sdk/math v0.0.0-20230228075616-68ac309b432c/go.mod h1:u/MXvf8wbUbCsAEyQSSYXXMsczAsFX48e2D6JI86T4o=
-github.com/bnb-chain/greenfield-tendermint v0.0.3 h1:oWD58n7U5phHpVyfnezhg6WBxITRQpRwOWOhKDQ/kVE=
-github.com/bnb-chain/greenfield-tendermint v0.0.3/go.mod h1:/v9z9F6cq0+f7EGG92lYSLBcPYQDILoK91X8YM28hWo=
 github.com/boltdb/bolt v1.3.1/go.mod h1:clJnj/oiGkjum5o1McbSZDSLxVThjynRyGBgiAx27Ps=
 github.com/bradfitz/go-smtpd v0.0.0-20170404230938-deb6d6237625/go.mod h1:HYsPBTaaSFSlLx/70C2HPIMNZpVV8+vt/A+FMnYP11g=
 github.com/bradfitz/gomemcache v0.0.0-20170208213004-1952afaa557d/go.mod h1:PmM6Mmwb0LSuEubjR8N7PtNe1KxZLtOUHtbeikc5h60=
@@ -589,6 +587,8 @@ github.com/fjl/memsize v0.0.0-20190710130421-bcb5799ab5e5/go.mod h1:VvhXpOYNQvB+
 github.com/flynn/go-shlex v0.0.0-20150515145356-3f9db97f8568/go.mod h1:xEzjJPgXI435gkrCt3MPfRiAkVrwSbHsst4LCFVfpJc=
 github.com/flynn/noise v1.0.0/go.mod h1:xbMo+0i6+IGbYdJhF31t2eR1BIU0CYc12+BNAKwUTag=
 github.com/fogleman/gg v1.2.1-0.20190220221249-0403632d5b90/go.mod h1:R/bRT+9gY/C5z7JzPU0zXsXHKM4/ayA+zqcVNZzPa1k=
+github.com/forcodedancing/greenfield-tendermint v0.0.0-20230505084849-9c7bf952469e h1:BCEISQ2+SeqdeNSI7aRsDhgsjH/8/qSzlqk7AY98nzM=
+github.com/forcodedancing/greenfield-tendermint v0.0.0-20230505084849-9c7bf952469e/go.mod h1:/v9z9F6cq0+f7EGG92lYSLBcPYQDILoK91X8YM28hWo=
 github.com/form3tech-oss/jwt-go v3.2.2+incompatible/go.mod h1:pbq4aXjuKjdthFRnoDwaVPLA+WlJuPGy+QneDUgJi2k=
 github.com/fortytw2/leaktest v1.3.0 h1:u8491cBMTQ8ft8aeV+adlcytMZylmA5nnwwkRZjI8vw=
 github.com/fortytw2/leaktest v1.3.0/go.mod h1:jDsjWgpAGjm2CA7WthBh/CdZYEPF31XHquHwclZch5g=
