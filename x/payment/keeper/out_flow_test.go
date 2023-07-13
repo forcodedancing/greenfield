@@ -93,7 +93,15 @@ func TestGetOutFlows(t *testing.T) {
 		Rate:      toAddr2Rate,
 	}
 	keeper.SetOutFlow(ctx, addr2, &outFlow2)
+	toAddr3 := sample.RandAccAddress()
+	toAddr3Rate := math.NewInt(10)
+	outFlow3 := types.OutFlow{
+		ToAddress: toAddr3.String(),
+		Status:    types.OUT_FLOW_STATUS_FROZEN,
+		Rate:      toAddr3Rate,
+	}
+	keeper.SetOutFlow(ctx, addr2, &outFlow3)
 
 	require.Equal(t, 1, len(keeper.GetOutFlows(ctx, addr1)))
-	require.Equal(t, 1, len(keeper.GetOutFlows(ctx, addr2)))
+	require.Equal(t, 2, len(keeper.GetOutFlows(ctx, addr2)))
 }

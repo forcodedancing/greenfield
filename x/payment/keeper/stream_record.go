@@ -27,6 +27,9 @@ func (k Keeper) CheckStreamRecord(streamRecord *types.StreamRecord) {
 	if streamRecord.NetflowRate.IsNil() {
 		panic(fmt.Sprintf("invalid streamRecord netflowRate %s", streamRecord.NetflowRate))
 	}
+	if !streamRecord.FrozenNetflowRate.IsNil() && streamRecord.FrozenNetflowRate.IsPositive() {
+		panic(fmt.Sprintf("invalid streamRecord frozenNetflowRate %s", streamRecord.NetflowRate))
+	}
 	if streamRecord.LockBalance.IsNil() || streamRecord.LockBalance.IsNegative() {
 		panic(fmt.Sprintf("invalid streamRecord lockBalance %s", streamRecord.LockBalance))
 	}
@@ -178,7 +181,7 @@ func (k Keeper) UpdateStreamRecord(ctx sdk.Context, streamRecord *types.StreamRe
 			}
 		}
 	}
-	// if the change is a pay(which decreases the static balance or netflow rate), the left static balance should be enough
+	// if the change is a pay (which decreases the static balance or netflow rate), the left static balance should be enough
 	if !forced && isPay && streamRecord.StaticBalance.IsNegative() {
 		return fmt.Errorf("stream account %s balance not enough, lack of %s BNB", streamRecord.Account, streamRecord.StaticBalance.Abs())
 	}
@@ -382,7 +385,7 @@ func (k Keeper) TryResumeStreamRecord(ctx sdk.Context, streamRecord *types.Strea
 		return fmt.Errorf("stream account %s status is not frozen", streamRecord.Account)
 	}
 
-	if !streamRecord.NetflowRate.IsNil() && !streamRecord.NetflowRate.IsZero() { // the account is resuming
+	if !streamRecord.NetflowRate.IsZero() { // the account is resuming
 		return fmt.Errorf("stream account %s status is resuming, although it is frozen now", streamRecord.Account)
 	}
 
@@ -390,6 +393,7 @@ func (k Keeper) TryResumeStreamRecord(ctx sdk.Context, streamRecord *types.Strea
 	reserveTime := params.VersionedParams.ReserveTime
 	forcedSettleTime := params.ForcedSettleTime
 
+	// it is allowed to resume a stream record which in during auto settle in multiple blocks
 	totalRate := streamRecord.NetflowRate.Add(streamRecord.FrozenNetflowRate)
 	streamRecord.StaticBalance = streamRecord.StaticBalance.Add(depositBalance)
 	expectedBalanceToResume := totalRate.Neg().Mul(sdkmath.NewIntFromUint64(reserveTime))
