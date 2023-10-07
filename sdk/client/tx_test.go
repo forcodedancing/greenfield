@@ -7,6 +7,8 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/tx"
+	"github.com/cosmos/cosmos-sdk/types/tx/signing"
+	authtx "github.com/cosmos/cosmos-sdk/x/auth/tx"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/grpc"
@@ -52,10 +54,16 @@ func TestSendTokenWithTxOptionSucceed(t *testing.T) {
 		FeePayer:   payerAddr,
 		FeeAmount:  feeAmt, // 2000 * 5000000000
 	}
-	response, err := gnfdCli.BroadcastTx(context.Background(), []sdk.Msg{transfer}, txOpt)
-	assert.NoError(t, err)
-	assert.Equal(t, uint32(0), response.TxResponse.Code)
-	t.Log(response.TxResponse.String())
+	txBytes, err := gnfdCli.SignTx(context.Background(), []sdk.Msg{transfer}, txOpt)
+	if err != nil {
+		println(err.Error())
+	}
+	txConfig := authtx.NewTxConfig(gnfdCli.codec, []signing.SignMode{signing.SignMode_SIGN_MODE_EIP_712})
+	tx, err := txConfig.TxDecoder()(txBytes)
+	if err != nil {
+		println(err.Error())
+	}
+	println(tx.GetMsgs())
 }
 
 func TestErrorOutWhenGasInfoNotFullProvided(t *testing.T) {

@@ -5,11 +5,16 @@ import (
 	"reflect"
 
 	sdkmath "cosmossdk.io/math"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 type (
 	Int  = sdkmath.Int
 	Uint = sdkmath.Uint
+)
+
+var (
+	AllAccountAddress = sdk.MustAccAddressFromHex("0x0000000000000000000000000000000000000000")
 )
 
 const (

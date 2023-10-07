@@ -195,14 +195,35 @@ func (c *GreenfieldClient) setSingerInfo(ctx context.Context, txBuilder client.T
 	if txOpt != nil && txOpt.Nonce != 0 {
 		nonce = txOpt.Nonce
 	}
-	sig := signing.SignatureV2{
-		PubKey: km.PubKey(),
-		Data: &signing.SingleSignatureData{
-			SignMode: signing.SignMode_SIGN_MODE_EIP_712,
+	sigs := []signing.SignatureV2{
+		{
+			PubKey: km.PubKey(),
+			Data: &signing.SingleSignatureData{
+				SignMode: signing.SignMode_SIGN_MODE_EIP_712,
+			},
+			Sequence: nonce,
 		},
-		Sequence: nonce,
 	}
-	if err := txBuilder.SetSignatures(sig); err != nil {
+
+	if !txOpt.FeePayer.Empty() && !txOpt.FeePayer.Equals(km.GetAddr()) {
+		feePayerAccount, err := c.GetAccountByAddr(ctx, txOpt.FeePayer)
+		if err != nil {
+			return err
+		}
+
+		if feePayerAccount.GetPubKey() != nil {
+			feePayerNonce := feePayerAccount.GetSequence()
+			sigs = append(sigs, signing.SignatureV2{
+				PubKey: feePayerAccount.GetPubKey(),
+				Data: &signing.SingleSignatureData{
+					SignMode: signing.SignMode_SIGN_MODE_EIP_712,
+				},
+				Sequence: feePayerNonce,
+			})
+		}
+	}
+
+	if err := txBuilder.SetSignatures(sigs...); err != nil {
 		return err
 	}
 	return nil

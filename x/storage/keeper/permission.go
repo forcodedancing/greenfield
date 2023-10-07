@@ -6,6 +6,7 @@ import (
 
 	"cosmossdk.io/math"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	upgradetypes "github.com/cosmos/cosmos-sdk/x/upgrade/types"
 
 	types2 "github.com/bnb-chain/greenfield/types"
 	gnfderrors "github.com/bnb-chain/greenfield/types/errors"
@@ -144,6 +145,24 @@ func (k Keeper) VerifyPolicy(ctx sdk.Context, resourceID math.Uint, resourceType
 				}
 			}
 			return effect
+		}
+	}
+
+	if ctx.IsUpgraded(upgradetypes.Pampas) {
+		policy, found = k.permKeeper.GetPolicyForAccount(ctx, resourceID, resourceType, types.AllAccountAddress)
+		if found {
+			effect, newPolicy := policy.Eval(action, ctx.BlockTime(), opts)
+			k.Logger(ctx).Info(fmt.Sprintf("CreateObject LimitSize update: %s, effect: %s, ctx.TxBytes : %d",
+				newPolicy.String(), effect, ctx.TxSize()))
+			if effect != permtypes.EFFECT_UNSPECIFIED {
+				if effect == permtypes.EFFECT_ALLOW && action == permtypes.ACTION_CREATE_OBJECT && newPolicy != nil && ctx.TxBytes() != nil {
+					_, err := k.permKeeper.PutPolicy(ctx, newPolicy)
+					if err != nil {
+						panic(fmt.Sprintf("Update policy error, %s", err))
+					}
+				}
+				return effect
+			}
 		}
 	}
 
