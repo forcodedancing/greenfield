@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"encoding/json"
 	"fmt"
 	"sort"
 
@@ -56,6 +57,10 @@ func (k Keeper) ApplyUserFlowsList(ctx sdk.Context, userFlowsList []types.UserFl
 	for _, userFlows := range userFlowsList {
 		from := userFlows.From
 		streamRecord, found := k.GetStreamRecord(ctx, from)
+
+		st, _ := json.Marshal(streamRecord)
+		fmt.Println(string(st))
+
 		if !found {
 			streamRecord = types.NewStreamRecord(from, currentTime)
 		}

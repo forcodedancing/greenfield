@@ -446,6 +446,10 @@ func (k Keeper) ChargeViaObjectChange(ctx sdk.Context, bucketInfo *storagetypes.
 		}
 	}
 
+	for _, flow := range userFlows.Flows {
+		fmt.Println(bucketInfo.BucketName, objectInfo.ObjectName, bucketInfo.PaymentAddress, flow.ToAddress, flow.Rate.String())
+	}
+
 	err = k.paymentKeeper.ApplyUserFlowsList(ctx, []types.UserFlows{userFlows})
 	if err != nil {
 		ctx.Logger().Error("charge object store fee failed", "bucket", bucketInfo.BucketName,

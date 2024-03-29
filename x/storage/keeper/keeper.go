@@ -329,6 +329,8 @@ func (k Keeper) ForceDeleteBucket(ctx sdk.Context, bucketId sdkmath.Uint, cap ui
 		var objectInfo types.ObjectInfo
 		k.cdc.MustUnmarshal(bz, &objectInfo)
 
+		fmt.Println(bucketInfo.BucketName, objectInfo.ObjectName, objectInfo.ObjectStatus)
+
 		// An object cannot be discontinued if the bucket is already discontinued,
 		// which means that after deleting objects when deleting a bucket the objects in it should be in
 		// OBJECT_STATUS_CREATED or OBJECT_STATUS_SEALED status.
