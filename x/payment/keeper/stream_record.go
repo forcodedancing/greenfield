@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"encoding/json"
 	"fmt"
 
 	sdkmath "cosmossdk.io/math"
@@ -45,6 +46,12 @@ func (k Keeper) CheckStreamRecord(streamRecord *types.StreamRecord) {
 
 // SetStreamRecord set a specific streamRecord in the store from its index
 func (k Keeper) SetStreamRecord(ctx sdk.Context, streamRecord *types.StreamRecord) {
+
+	fmt.Println("SetStreamRecord")
+
+	st, _ := json.Marshal(streamRecord)
+	fmt.Println(string(st))
+
 	k.CheckStreamRecord(streamRecord)
 	account := streamRecord.Account
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.StreamRecordKeyPrefix)

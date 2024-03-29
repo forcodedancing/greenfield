@@ -84,7 +84,7 @@ func (k Keeper) ApplyUserFlowsList(ctx sdk.Context, userFlowsList []types.UserFl
 
 func (k Keeper) applyActiveUserFlows(ctx sdk.Context, userFlows types.UserFlows, from sdk.AccAddress, streamRecord *types.StreamRecord) error {
 
-	fmt.Println("applyActiveUserFlows")
+	fmt.Println("\n\napplyActiveUserFlows \n\n")
 
 	uf, _ := json.Marshal(userFlows)
 	fmt.Println(string(uf))
