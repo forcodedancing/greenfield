@@ -61,6 +61,9 @@ func (k Keeper) ApplyUserFlowsList(ctx sdk.Context, userFlowsList []types.UserFl
 		st, _ := json.Marshal(streamRecord)
 		fmt.Println(string(st))
 
+		outs, _ := json.Marshal(k.GetOutFlows(ctx, from))
+		fmt.Println(string(outs))
+
 		if !found {
 			streamRecord = types.NewStreamRecord(from, currentTime)
 		}
