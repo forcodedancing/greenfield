@@ -239,15 +239,16 @@ func (k Keeper) UpdateStreamRecord(ctx sdk.Context, streamRecord *types.StreamRe
 
 func (k Keeper) UpdateStreamRecordByAddr(ctx sdk.Context, change *types.StreamRecordChange) (ret *types.StreamRecord, err error) {
 	streamRecord, _ := k.GetStreamRecord(ctx, change.Addr)
-	err = k.UpdateStreamRecord(ctx, streamRecord, change)
-	if err != nil {
-		return
-	}
 
 	fmt.Println("UpdateStreamRecordByAddr")
 
 	st, _ := json.Marshal(streamRecord)
 	fmt.Println(string(st))
+
+	err = k.UpdateStreamRecord(ctx, streamRecord, change)
+	if err != nil {
+		return
+	}
 
 	k.SetStreamRecord(ctx, streamRecord)
 	return streamRecord, nil
