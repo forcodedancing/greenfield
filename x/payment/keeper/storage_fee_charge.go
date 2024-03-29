@@ -83,6 +83,18 @@ func (k Keeper) ApplyUserFlowsList(ctx sdk.Context, userFlowsList []types.UserFl
 }
 
 func (k Keeper) applyActiveUserFlows(ctx sdk.Context, userFlows types.UserFlows, from sdk.AccAddress, streamRecord *types.StreamRecord) error {
+
+	fmt.Println("applyActiveUserFlows")
+
+	uf, _ := json.Marshal(userFlows)
+	fmt.Println(string(uf))
+
+	st, _ := json.Marshal(streamRecord)
+	fmt.Println(string(st))
+
+	outs, _ := json.Marshal(k.GetOutFlows(ctx, from))
+	fmt.Println(string(outs))
+
 	var rateChanges []types.StreamRecordChange
 	totalRate := sdk.ZeroInt()
 	for _, flowChange := range userFlows.Flows {
@@ -113,6 +125,11 @@ func (k Keeper) applyActiveUserFlows(ctx sdk.Context, userFlows types.UserFlows,
 	// update flows
 	deltaFlowCount := k.MergeActiveOutFlows(ctx, from, userFlows.Flows) // deltaFlowCount can be negative
 	streamRecord.OutFlowCount = uint64(int64(streamRecord.OutFlowCount) + int64(deltaFlowCount))
+
+	fmt.Println("deltaFlowCount", deltaFlowCount)
+
+	st, _ = json.Marshal(streamRecord)
+	fmt.Println(string(st))
 
 	k.SetStreamRecord(ctx, streamRecord)
 	err = k.ApplyStreamRecordChanges(ctx, rateChanges)
