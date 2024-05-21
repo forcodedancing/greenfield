@@ -6,6 +6,7 @@ import (
 
 	"cosmossdk.io/errors"
 	sdkmath "cosmossdk.io/math"
+
 	"github.com/cometbft/cometbft/libs/log"
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
@@ -2189,6 +2190,7 @@ func (k Keeper) MigrateBucket(ctx sdk.Context, operator sdk.AccAddress, bucketNa
 		BucketName:     bucketName,
 		BucketId:       bucketInfo.Id,
 		DstPrimarySpId: dstSP.Id,
+		Status:         bucketInfo.BucketStatus,
 	}); err != nil {
 		return err
 	}
@@ -2271,6 +2273,7 @@ func (k Keeper) CompleteMigrateBucket(ctx sdk.Context, operator sdk.AccAddress, 
 		BucketId:                   bucketInfo.Id,
 		GlobalVirtualGroupFamilyId: gvgFamilyID,
 		SrcPrimarySpId:             srcGvgFamily.PrimarySpId,
+		Status:                     bucketInfo.BucketStatus,
 	}); err != nil {
 		return err
 	}
@@ -2317,6 +2320,7 @@ func (k Keeper) CancelBucketMigration(ctx sdk.Context, operator sdk.AccAddress, 
 		Operator:   operator.String(),
 		BucketName: bucketName,
 		BucketId:   bucketInfo.Id,
+		Status:     bucketInfo.BucketStatus,
 	}); err != nil {
 		return err
 	}
@@ -2351,6 +2355,7 @@ func (k Keeper) RejectBucketMigration(ctx sdk.Context, operator sdk.AccAddress, 
 		Operator:   operator.String(),
 		BucketName: bucketName,
 		BucketId:   bucketInfo.Id,
+		Status:     bucketInfo.BucketStatus,
 	}); err != nil {
 		return err
 	}
